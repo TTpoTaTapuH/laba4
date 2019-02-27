@@ -4,8 +4,6 @@ import java.net.*;
 
 public class laba4_server {
     public static int PORT = 8888;
-    private static final int TIME_SEND_SLEEP = 100;
-    private static final int COUNT_TO_SEND = 10;
     private ServerSocket servSocket;
 
     public static void main(String[] args) {
@@ -46,11 +44,14 @@ public class laba4_server {
     }
 }
 class Listener implements Runnable{
+    public static final int READ_BUFFER_SIZE = 10;
     Socket socket;
     public Listener(Socket aSocket){
         socket = aSocket;
     }
     public void run(){
+        char[] readed = new char[READ_BUFFER_SIZE];
+        StringBuffer strBuff = new StringBuffer();
         try{
             System.out.println("Слушатель запущен");
             int count = 0;
@@ -63,6 +64,17 @@ class Listener implements Runnable{
                 Thread.sleep(100);
             }
             pWriter.close();
+
+            InputStream in = socket.getInputStream();
+            InputStreamReader reader = new InputStreamReader(in);
+            while(true){
+                int count1 = reader.read(readed, 0, READ_BUFFER_SIZE);
+                if(count1 == -1) break;
+                strBuff.append(readed, 0, count1);
+                Thread.yield();
+            }
+
+            System.out.println("Клиент " + " прочёл: " + strBuff.toString());
         }catch(IOException e){
             System.err.println("Исключение: " + e.toString());
         } catch (InterruptedException e) {
@@ -70,6 +82,7 @@ class Listener implements Runnable{
         }
     }
 }
+
 
 
 
