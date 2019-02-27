@@ -36,6 +36,8 @@ public class laba4_server {
                 socket = aSocket;
             }
             public void run(){
+                char[] readed = new char[10];
+                StringBuffer strBuff = new StringBuffer();
                 try{
                     System.out.println("Слушатель запущен");
                     int count = 0;
@@ -45,10 +47,9 @@ public class laba4_server {
                     InputStream in = socket.getInputStream();
                     InputStreamReader reader = new InputStreamReader(in);
                     BufferedReader preader = new BufferedReader(reader);
+                    String text = preader.readLine();
+                    System.out.println(text);
                     while(count < COUNT_TO_SEND){
-                        String text = preader.readLine();
-                        System.out.println(text);
-                        pWriter.print("Получил твоё сообщение. Ты ввел " + text);
                         count++;
                         pWriter.print(((count>1) ? "," : "") + "говорит " + count);
                         Thread.sleep(TIME_SEND_SLEEP);
@@ -78,4 +79,5 @@ public class laba4_server {
         }
     }
 }
+
 
