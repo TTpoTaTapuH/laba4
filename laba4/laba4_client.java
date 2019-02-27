@@ -3,7 +3,7 @@ import java.io.*;
 import java.net.*;
 
 public class laba4_client {
-    public static int PORT = 2500;
+    public static int PORT = 8888;
     public static String HOST = "localhost";
     public static final int CLIENT_COUNT = 6;
     public static final int READ_BUFFER_SIZE = 10;
@@ -18,10 +18,17 @@ public class laba4_client {
             Socket socket = new Socket(HOST, PORT);
             InputStream in = socket.getInputStream();
             InputStreamReader reader = new InputStreamReader(in);
+            BufferedReader preader = new BufferedReader(reader);
+            OutputStream out = socket.getOutputStream();
+            OutputStreamWriter writer = new OutputStreamWriter(out);
+            PrintWriter pWriter = new PrintWriter(writer);
+
             while(true){
-                int count = reader.read(readed, 0, READ_BUFFER_SIZE);
-                if(count == -1) break;
-                strBuff.append(readed, 0, count);
+                pWriter.print("Hello World!");
+                System.out.println(preader.readLine());
+                //int count = reader.read(readed, 0, READ_BUFFER_SIZE);
+                //if(count == -1) break;
+                //strBuff.append(readed, 0, count);
                 Thread.yield();
             }
         } catch (UnknownHostException e) {
@@ -33,12 +40,16 @@ public class laba4_client {
     }
     public static void main(String[] args) {
         String name = "имя";
-        PORT = Integer.parseInt(args[0]);
-        HOST = args[1];
-        for(int i = 1; i <= CLIENT_COUNT; i++){
+        //PORT = Integer.parseInt(args[0]);
+        //HOST = args[1];
+        TCPClient ja = new TCPClient("test");
+        Thread th = new Thread(ja);
+        th.start();
+        /*for(int i = 1; i <= CLIENT_COUNT; i++){
             TCPClient ja = new TCPClient(name+i);
             Thread th = new Thread(ja);
             th.start();
-        }
+        }*/
     }
 }
+
