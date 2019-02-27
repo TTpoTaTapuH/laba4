@@ -7,6 +7,8 @@ public class laba4_server {
     private static final int TIME_SEND_SLEEP = 100;
     private static final int COUNT_TO_SEND = 10;
     private ServerSocket servSocket;
+    private static BufferedReader in; // поток чтения из сокета
+    private static BufferedWriter out; // поток записи в сокет
     public static void main(String[] args) {
         laba4_server lab = new laba4_server();
         //lab.read_file();
@@ -36,28 +38,27 @@ public class laba4_server {
                 socket = aSocket;
             }
             public void run(){
-                char[] readed = new char[10];
-                StringBuffer strBuff = new StringBuffer();
-                try{
+                try {
                     System.out.println("Слушатель запущен");
                     int count = 0;
-                    OutputStream out = socket.getOutputStream();
-                    OutputStreamWriter writer = new OutputStreamWriter(out);
-                    PrintWriter pWriter = new PrintWriter(writer);
-                    InputStream in = socket.getInputStream();
-                    InputStreamReader reader = new InputStreamReader(in);
-                    BufferedReader preader = new BufferedReader(reader);
-                    String text = preader.readLine();
-                    System.out.println(text);
-                    while(count < COUNT_TO_SEND){
-                        count++;
-                        pWriter.print(((count>1) ? "," : "") + "говорит " + count);
-                        Thread.sleep(TIME_SEND_SLEEP);
-                    }
-                    pWriter.close();
-                }catch(IOException e){
-                    System.err.println("Исключение: " + e.toString());
-                } catch (InterruptedException e) {
+
+                    OutputStream outt = socket.getOutputStream();
+                    OutputStreamWriter writer = new OutputStreamWriter(outt);
+                    out = new BufferedWriter(writer);
+
+                    InputStream inp = socket.getInputStream();
+                    InputStreamReader reader = new InputStreamReader(inp);
+                    in = new BufferedReader(reader);
+
+                    String word = in.readLine();
+                    System.out.println(word);
+                    // не долго думая отвечает клиенту
+                    out.write("Привет, это Сервер! Подтверждаю, вы написали : " + word + "\n");
+                    out.flush(); // выталкиваем все из буфера
+                    out.close();
+                    in.close();
+                }
+                catch(IOException e){
                     System.err.println("Исключение: " + e.toString());
                 }
             }
@@ -79,5 +80,6 @@ public class laba4_server {
         }
     }
 }
+
 
 
