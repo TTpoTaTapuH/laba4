@@ -45,15 +45,14 @@ public class laba4_server {
                     InputStream in = socket.getInputStream();
                     InputStreamReader reader = new InputStreamReader(in);
                     BufferedReader preader = new BufferedReader(reader);
-                    String text = preader.readLine();
-                    System.out.println(text);
-                    pWriter.print("Получил твоё сообщение. Ты ввел " + text);
-                    Thread.sleep(100);
-                    /*while(count < COUNT_TO_SEND){
+                    while(count < COUNT_TO_SEND){
+                        String text = preader.readLine();
+                        System.out.println(text);
+                        pWriter.print("Получил твоё сообщение. Ты ввел " + text);
                         count++;
                         pWriter.print(((count>1) ? "," : "") + "говорит " + count);
                         Thread.sleep(TIME_SEND_SLEEP);
-                    }*/
+                    }
                     pWriter.close();
                 }catch(IOException e){
                     System.err.println("Исключение: " + e.toString());
