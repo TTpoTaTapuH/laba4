@@ -63,18 +63,18 @@ class Listener implements Runnable{
                 pWriter.print(((count>1) ? "," : "") + "говорит " + count);
                 Thread.sleep(100);
             }
-            pWriter.close();
+            //pWriter.close();
 
-            InputStream in = socket.getInputStream();
-            InputStreamReader reader = new InputStreamReader(in);
-            while(true){
-                int count1 = reader.read(readed, 0, READ_BUFFER_SIZE);
-                if(count1 == -1) break;
-                strBuff.append(readed, 0, count1);
+            BufferedReader fromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String line = fromClient.readLine();
+            //while(true){
+                //int count1 = reader.read(readed, 0, READ_BUFFER_SIZE);
+                //if(count1 == -1) break;
+                //strBuff.append(readed, 0, count1);
                 Thread.yield();
-            }
+            //}
 
-            System.out.println("Клиент " + " прочёл: " + strBuff.toString());
+            System.out.println("Клиент " + " прочёл: " + line);
         }catch(IOException e){
             System.err.println("Исключение: " + e.toString());
         } catch (InterruptedException e) {
@@ -82,8 +82,3 @@ class Listener implements Runnable{
         }
     }
 }
-
-
-
-
-
