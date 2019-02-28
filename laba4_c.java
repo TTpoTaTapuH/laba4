@@ -41,10 +41,11 @@ public class laba4_c implements Runnable{
     }
 
     public static void main(String[] args) {
-        //PORT = Integer.parseInt(args[0]);
-        //HOST = args[1];
+        HOST = args[0];
+        PORT = Integer.parseInt(args[1]);
         laba4_c ja1 = new laba4_c("test");
         Thread th = new Thread(ja1);
         th.start();
     }
 }
+
